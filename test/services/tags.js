@@ -1,8 +1,8 @@
 'use strict'
 
-const Code = require('code')
-const Lab = require('lab')
-const LabbableServer = require('../../lib')
+const Code = require('@hapi/code')
+const Lab = require('@hapi/lab')
+const LabbableServer = require('../../modules/app')
 
 const lab = exports.lab = Lab.script()
 const describe = lab.describe
@@ -28,9 +28,9 @@ describe('Services', () => {
       server = srv
 
       return Promise.all([
-        factory.create('article', {tagList: ['tag1', 'tag2', 'tag3']}),
-        factory.create('article', {tagList: ['tag4', 'tag5', 'tag6']}),
-        factory.create('article', {tagList: ['tag7', 'tag8', 'tag9', 'tag10']})
+        factory.create('article', { tagList: ['tag1', 'tag2', 'tag3'] }),
+        factory.create('article', { tagList: ['tag4', 'tag5', 'tag6'] }),
+        factory.create('article', { tagList: ['tag7', 'tag8', 'tag9', 'tag10'] })
       ]).then(results => {
         articles = [].concat(results[0], results[1], results[2])
         return done()

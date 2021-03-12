@@ -1,8 +1,8 @@
-const User = require('../../lib/modules/models/User')
+const User = require('../../modules/models/User')
 
 module.exports = (factory) => {
-  var buildOptions = buildOptions => {
-    let attrs = {
+  const buildOptions = buildOptions => {
+    const attrs = {
       favorited: false,
       following: false,
       afterBuild: (model, attrs, buildOptions) => {
@@ -62,12 +62,12 @@ module.exports = (factory) => {
     bio: 'I worked at statefarm',
     image: 'https://static.productionready.io/images/smiley-cyrus.jpg'
   },
-    {
-      afterCreate: (model, attrs, opts) => {
-        model.remove((err, model) => {
-          if (err) throw err
-        })
-        return model
-      }
-    })
+  {
+    afterCreate: (model, attrs, opts) => {
+      model.remove((err, model) => {
+        if (err) throw err
+      })
+      return model
+    }
+  })
 }

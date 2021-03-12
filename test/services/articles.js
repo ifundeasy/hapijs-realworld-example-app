@@ -1,8 +1,8 @@
 'use strict'
 
-const Code = require('code')
-const Lab = require('lab')
-const LabbableServer = require('../../lib')
+const Code = require('@hapi/code')
+const Lab = require('@hapi/lab')
+const LabbableServer = require('../../modules/app')
 
 const lab = exports.lab = Lab.script()
 const describe = lab.describe

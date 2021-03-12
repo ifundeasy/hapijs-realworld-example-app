@@ -1,0 +1,38 @@
+const config = require('../../config')
+const mongoose = require('mongoose')
+
+mongoose.set('useNewUrlParser', true)
+mongoose.set('useFindAndModify', false)
+mongoose.set('useCreateIndex', true)
+
+const register = async (server, options) => {
+  const validate = async function (decoded, request, h) {
+    const id = mongoose.Types.ObjectId(decoded.id)
+
+    try {
+      const user = await server.app.db.User.findById(id)
+
+      if (!user) {
+        return { isValid: false }
+      }
+
+      return { isValid: true, credentials: { user: user } }
+    } catch (err) {
+      return { isValid: false }
+    }
+  }
+
+  server.auth.strategy('jwt', 'jwt', {
+    key: config.auth.secret,
+    validate: validate,
+    tokenType: config.auth.tokenType,
+    verifyOptions: config.auth.verifyOptions
+  })
+}
+
+const plugin = {
+  register,
+  pkg: require('./package.json')
+}
+
+module.exports = plugin

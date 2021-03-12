@@ -1,4 +1,4 @@
-const User = require('../../lib/modules/models/User')
+const User = require('../../modules/models/User')
 
 module.exports = (factory) => {
   factory.define('user', User, {

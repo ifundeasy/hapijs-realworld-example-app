@@ -1,8 +1,8 @@
 'use strict'
 
-const Code = require('code')
-const Lab = require('lab')
-const LabbableServer = require('../../lib')
+const Code = require('@hapi/code')
+const Lab = require('@hapi/lab')
+const LabbableServer = require('../../modules/app')
 
 const lab = exports.lab = Lab.script()
 const describe = lab.describe
@@ -17,7 +17,7 @@ const Promise = require('bluebird')
 
 describe('Services', () => {
   let server, user2, user3
-  var user1, article
+  let user1, article
 
   before((done) => {
     LabbableServer.ready((err, srv) => {
@@ -83,7 +83,7 @@ describe('Services', () => {
     })
 
     it('create', (done) => {
-      factory.attrs('user', {password: 'password'}).then(attrs => {
+      factory.attrs('user', { password: 'password' }).then(attrs => {
         server.methods.services.users.create({ user: attrs }, (err, user) => {
           expect(err).to.be.null()
           expect(user._id).to.not.be.undefined().and.not.empty()
@@ -97,13 +97,13 @@ describe('Services', () => {
     })
 
     it('update', (done) => {
-      let payload = {
+      const payload = {
         username: `${user1.username}updated`,
         email: `updated${user1.email}`,
         password: 'p4ss2@rd'
       }
 
-      server.methods.services.users.update(user1, {user: payload}, (err, user) => {
+      server.methods.services.users.update(user1, { user: payload }, (err, user) => {
         expect(err).to.be.null()
         expect(user.username).to.equal(payload.username)
         expect(user.email).to.equal(payload.email)

@@ -1,5 +1,5 @@
-const Article = require('../../lib/modules/models/Article')
-const Comment = require('../../lib/modules/models/Comment')
+const Article = require('../../modules/models/Article')
+const Comment = require('../../modules/models/Comment')
 const faker = require('faker')
 
 module.exports = (factory) => {

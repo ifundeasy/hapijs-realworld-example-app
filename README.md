@@ -21,7 +21,7 @@ Install [Node.JS LTS version](https://nodejs.org/en/download/)
 - `cd /path/where/your/cloned/the/repo`
 - `npm install` to install all required dependencies
 - Install MongoDB Community Edition ([instructions](https://docs.mongodb.com/manual/installation/#tutorials)) and run it by executing `mongod -d /path/where/you/want/to/store/the/data`
-- Run `./generate_secret_key --encoding base64`
+- Run `node ./scripts/generate-secret-key.js --encoding base64`
 - `npm start` to start the local server
 - The API is available at `http://localhost:8080/api`
 
@@ -30,7 +30,7 @@ Install [Node.JS LTS version](https://nodejs.org/en/download/)
 - Install [Docker](https://docs.docker.com/engine/installation/)
 - Clone this repo
 - `cd /path/where/your/cloned/the/repo`
-- Run `./generate_secret_key --encoding base64`
+- Run `node ./scripts/generate-secret-key.js --encoding base64`
 - `docker-compose up`
 - The API is available at `http://localhost:8080/api`
 
@@ -47,13 +47,13 @@ Install [Node.JS LTS version](https://nodejs.org/en/download/)
 
 ## Application Structure
 
-- `lib/index.js` - The entry point to our application. This file bootstrap our HapiJS server. It also requires the routes and models we'll be using in the application.
-- `lib/config/` - This folder contains plugins configuration as well as a central location for configuration/environment variables.
-- `lib/modules/api/*` - This folder contains the routes definitions for our API.
+- `config/` - This folder contains plugins configuration as well as a central location for configuration/environment variables.
+- `modules/app.js` - The entry point to our application. This file bootstrap our HapiJS server. It also requires the routes and models we'll be using in the application.
+- `modules/api/*` - This folder contains the routes definitions for our API.
 
 ## Authentication
 
-Requests are authenticated using the `Authorization` header with a valid JWT. We use one hapijs pluggin in `lib/modules/auth/index.js` that can be used to authenticate requests. The `hapi-auth-jwt2` plugin using our application's secret and will return a 401 status code if the request cannot be authenticated. The payload of the JWT can then be accessed from `request.auth.credentials.user` in the endpoint. 
+Requests are authenticated using the `Authorization` header with a valid JWT. We use one hapijs pluggin in `modules/auth/index.js` that can be used to authenticate requests. The `hapi-auth-jwt2` plugin using our application's secret and will return a 401 status code if the request cannot be authenticated. The payload of the JWT can then be accessed from `request.auth.credentials.user` in the endpoint. 
 
 HapiJS auth mecanism provide 3 [Authentications mode](https://hapijs.com/api#route-options):
 
@@ -61,9 +61,11 @@ HapiJS auth mecanism provide 3 [Authentications mode](https://hapijs.com/api#rou
 - The `{ auth: { mode: 'optional', strategy: 'jwt' } }` config options in the same way as `{ auth: 'jwt' }`, but will *not* return a 401 status code if the request cannot be authenticated (JWT must be valid).
 - The `{ auth: 'try', strategy: 'jwt' }` similar to `optional` but invalid JWT will pass with `request.auth.isAuthenticated` set to `false` and `request.auth.credentials` set to `null`.
 
+To access restricted API, create an user then, you'll get its access token by calling api/users/login.
+
 # Error Handling
 
- HapiJS use [Boom](https://github.com/hapijs/boom) for errors response that use a particular format response, so we need to reformat it, to meet the Backend API specs errors handling section. So we added a `preResponse` server extension, to reformat it in `lib/modules/api/index.js`. 
+ HapiJS use [Boom](https://github.com/hapijs/boom) for errors response that use a particular format response, so we need to reformat it, to meet the Backend API specs errors handling section. So we added a `preResponse` server extension, to reformat it in `modules/api/index.js`. 
 
 # Validations
 
